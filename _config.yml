@@ -1,5 +1,5 @@
 remote_theme: pages-themes/minimal@v0.2.0
 title: Qianting Rong
-description: Hi, 我是UE5游戏开发工程师. 我在这里分享我的学习笔记和项目实践沉淀. 
+description: Hi, 我是UE5游戏开发工程师. 欢迎阅读我的学习笔记和项目实践沉淀. 
 plugins:
 - jekyll-remote-theme
