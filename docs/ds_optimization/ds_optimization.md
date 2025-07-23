@@ -277,13 +277,14 @@ struct TStructOpsTypeTraits< FExampleArray > : public TStructOpsTypeTraitsBase2<
 ```
 
 ### 1.6 Replication Graph
-> [Replication Graph In Unreal Engine | Unreal Engine 5.4 Documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/replication-graph-in-unreal-engine?application_version=5.4) 
+> [Replication Graph In Unreal Engine | Unreal Engine 5.4 Documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/replication-graph-in-unreal-engine?application_version=5.4)
+> 
 > [Networking in 4.20: The Replication Graph | Feature Highlight | Unreal Engine Livestream](https://www.youtube.com/watch?v=CDnNAAzgltw) 
 
 Replication Graph在场景中存在大量需要同步的Actor以及玩家的情况下，可以针对不同Actor定制不同的自定义同步策略。Replication Graph和UE默认的同步机制是互斥的，二者之间只能使用其中一个。
 在通常情况下，我们可能会关闭大量Actor的网络连接以及降低同步的频率来减轻网络同步的压力和处理器的负担，与此同时带来的负面作用是客户端的表现和体验变得卡顿迟缓，也就是说，并不是所有Actor都适用同一种策略，总体的策略无法满足大型游戏的需求。针对不同的Actor我们应该量身定制不同的同步方案，对于那些影响体验、更需要及时响应、影响范围广泛的Actor，我们可以给它设置更高的网络同步频率，扩大它的同步范围，对于影响较小的Actor我们可以适度优化，从而能够减轻一部分的网络同步压力，同时也能给大型多人游戏带来更好的游戏体验。
 Replication Graph在其中起到的作用是根据我们给出的一个网络连接Net Connnection，返回一个该连接下应该同步的Actor的列表。整个Replication Graph是一个树状的结点集合，每个结点UReplicationGraphNode代表一种同步策略，每个结点下还能够产生子结点。使用时需要将Actor注册到对应的节点下，例如基于网格的同步策略结点Grid Spatialization 2D，Actor注册在该结点下后将应用基于网格的同步策略，只有当Actor在符合距离要求的网格内，Actor才有同步的机会。
-![堡垒之夜的Replication Graph总体布局](img\1.6.1.png) 
+![堡垒之夜的Replication Graph总体布局](./img/1.6.1.png) 
 
 每个结点包含两个基本列表：同步的Actor列表和已加载关卡中的Actor列表
  ```C++
@@ -304,7 +305,8 @@ FStreamingLevelActorListCollection StreamingLevelCollection;
 - 按同步对象划分UReplicationGraphNode_ActorList UReplicationGraphNode_AlwaysRelevant_ForConnection 同步给单个或多个客户端
 
 #### 基于网格的同步策略结点Grid Spatialization 2D
-![](img\1.6.2.png)
+<img src="./img/1.6.2.png" width="50%" />
+
 地图被划分成多个网格，以玩家角色为中心划定一个圆形范围，该圆形区域能够触及到的网格内的Actor才有机会能够被同步。Replication Graph会返回这些网格中Actor的列表，但并不代表所有这些Actor最终都会被同步，还需要进一步计算Actor与玩家角色的距离才能够决定Actor是否能够被同步。
 
 #### 为什么要进行两次计算，先用网格再计算距离获得同步Actor列表，而不直接计算距离一步到位？
@@ -339,7 +341,7 @@ FAutoConsoleVariableRef UWorldPartition::CVarEnableServerStreaming(
 > [Optimizing UE4 for Fortnite: Battle Royale - Part 1 | GDC 2018 | Unreal Engine](https://www.youtube.com/watch?v=KHWquMYtji0&t=335s) 
 
 重要度管理器。一款用于管理所有对象的重要度的插件，根据重要度对对象进行排序并分配预算，对象根据得到的重要度得分增加或减少对CPU的消耗，从而减轻处理器的负担，提升玩家游戏体验感。每个tick手动更新管理器，管理器重新计算重要度以及给对象排序，当然，不断地计算重要度也可能带来额外的开销，在足够复杂的游戏系统中这也许能够减少处理器对大量不重要对象的计算，但在简单的游戏系统中每个tick计算重要度带来的负担可能反而起到反效果。重要度评估函数（打分算法）支持自定义，可以根据对象和具体功能计算具体的重要度。
-![](img\2.0.1.png)
+![](./img/2.0.1.png)
 
 以客户端为例，通常在UGameViewportClient::Tick中更新客户端中接受评估对象的重要度。评估重要度的影响因素可以有：
 - 距离。距离玩家越近，重要度越高。
