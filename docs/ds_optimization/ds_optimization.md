@@ -1,3 +1,5 @@
+[>>返回](././README.md)
+
 # DS优化思路
 
 ___
@@ -45,7 +47,7 @@ enum ELifetimeCondition : int
 
 ### 1.2 Dormancy
 
-> [Optimizing Server Performance with Net Dormancy](https://dev.epicgames.com/community/learning/tutorials/K8vY/unreal-engine-optimizing-server-performance-with-net-dormancy) 
+[Optimizing Server Performance with Net Dormancy](https://dev.epicgames.com/community/learning/tutorials/K8vY/unreal-engine-optimizing-server-performance-with-net-dormancy) 
 
 Actor休眠，适合低频率同步的Actor。将一个同步频率较低的Actor标记为休眠，则NetDriver的同步Actor列表将跳过该Actor，Actor的属性不再自动同步，从而减少同步属性的比较时间。休眠不会导致Actor被从客户端中删除，Actor在客户端中仍然可见。只有Actor重新被标记为Awake，其属性才能自动同步。
 
@@ -312,9 +314,9 @@ struct TStructOpsTypeTraits< FExampleArray > : public TStructOpsTypeTraitsBase2<
 
 ### 1.6 Replication Graph
 
-> [Replication Graph In Unreal Engine | Unreal Engine 5.4 Documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/replication-graph-in-unreal-engine?application_version=5.4)
-> 
-> [Networking in 4.20: The Replication Graph | Feature Highlight | Unreal Engine Livestream](https://www.youtube.com/watch?v=CDnNAAzgltw) 
+[Replication Graph In Unreal Engine | Unreal Engine 5.4 Documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/replication-graph-in-unreal-engine?application_version=5.4)
+ 
+[Networking in 4.20: The Replication Graph | Feature Highlight | Unreal Engine Livestream](https://www.youtube.com/watch?v=CDnNAAzgltw) 
 
 Replication Graph在场景中存在大量需要同步的Actor以及玩家的情况下，可以针对不同Actor定制不同的自定义同步策略。Replication Graph和UE默认的同步机制是互斥的，二者之间只能使用其中一个。
 在通常情况下，我们可能会关闭大量Actor的网络连接以及降低同步的频率来减轻网络同步的压力和处理器的负担，与此同时带来的负面作用是客户端的表现和体验变得卡顿迟缓，也就是说，并不是所有Actor都适用同一种策略，总体的策略无法满足大型游戏的需求。针对不同的Actor我们应该量身定制不同的同步方案，对于那些影响体验、更需要及时响应、影响范围广泛的Actor，我们可以给它设置更高的网络同步频率，扩大它的同步范围，对于影响较小的Actor我们可以适度优化，从而能够减轻一部分的网络同步压力，同时也能给大型多人游戏带来更好的游戏体验。
@@ -381,9 +383,9 @@ FAutoConsoleVariableRef UWorldPartition::CVarEnableServerStreaming(
 
 ## 2 Significance Manager
 
-> [Significance Manager In Unreal Engine | Unreal Engine 5.3 Documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/significance-manager-in-unreal-engine?application_version=5.3)
-> 
-> [Optimizing UE4 for Fortnite: Battle Royale - Part 1 | GDC 2018 | Unreal Engine](https://www.youtube.com/watch?v=KHWquMYtji0&t=335s) 
+[Significance Manager In Unreal Engine | Unreal Engine 5.3 Documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/significance-manager-in-unreal-engine?application_version=5.3)
+
+[Optimizing UE4 for Fortnite: Battle Royale - Part 1 | GDC 2018 | Unreal Engine](https://www.youtube.com/watch?v=KHWquMYtji0&t=335s) 
 
 重要度管理器。一款用于管理所有对象的重要度的插件，根据重要度对对象进行排序并分配预算，对象根据得到的重要度得分增加或减少对CPU的消耗，从而减轻处理器的负担，提升玩家游戏体验感。每个tick手动更新管理器，管理器重新计算重要度以及给对象排序，当然，不断地计算重要度也可能带来额外的开销，在足够复杂的游戏系统中这也许能够减少处理器对大量不重要对象的计算，但在简单的游戏系统中每个tick计算重要度带来的负担可能反而起到反效果。重要度评估函数（打分算法）支持自定义，可以根据对象和具体功能计算具体的重要度。
 
